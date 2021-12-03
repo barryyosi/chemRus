@@ -53,7 +53,7 @@ int main()
 {
 	int choice;
 	double balance;
-	//char invFileName[200], errFileName[200];
+	
 	chemTree* invTree = (chemTree*)malloc(sizeof(chemTree));
 	FILE* currErr = NULL;
 	invTree->root = NULL;
@@ -71,8 +71,7 @@ int main()
 		case 0:
 			exit(1);
 		case 1:
-		{//char* invFileName = (char*)malloc(200 * sizeof(char));
-		//char* errFileName = (char*)malloc(200 * sizeof(char));
+		{
 			printf("Please enter inventory file name: ");
 			scanf("%200[^\n]s", invFileName);
 			while ((getchar()) != '\n');
@@ -86,11 +85,11 @@ int main()
 				m = scanf("%lf", &balance);
 				while ((getchar()) != '\n');
 			}
-			//while ((getchar()) != '\n');
+
 			initInventory(invFileName, balance, invTree);
 			printf("Please enter error file name: ");
-			//while ((getchar()) != '\n');
-			if(scanf("%200[^\n]s", errFileName))
+
+			if (scanf("%200[^\n]s", errFileName))
 			{
 				while ((getchar()) != '\n');
 				currErr = initErr(errFileName, currErr);
@@ -100,29 +99,30 @@ int main()
 				while ((getchar()) != '\n');
 				currErr = initErr("", currErr);
 			}
-			//free(invFileName);
-			//free(errFileName);
+
 			break; }
 		case 2:
-			if (invTree->root == NULL)
-				printf("inventory not initialized yet. Initialize before choosing any other option.\n");
-			else
-			{
-				if (currErr == NULL)
-					printf("Error file not initialized yet. Initialize before choosing any other option.\n");
+		{	if (invTree->root == NULL)
+					printf("inventory not initialized yet. Initialize before choosing any other option.\n");
 				else
 				{
-					printf("Please enter name of file for saving current inventory status: ");
-					scanf("%200[^\n]s", invFileName);
-					while ((getchar()) != '\n');
-					printf("Please enter name of file for saving error status: ");
-					scanf("%200[^\n]s", errFileName_2);
-					saveInventory(invFileName, errFileName_2, invTree, currErr);
+					if (currErr == NULL)
+						printf("Error file not initialized yet. Initialize before choosing any other option.\n");
+					else
+					{
+						printf("Please enter name of file for saving current inventory status: ");
+						scanf("%200[^\n]s", invFileName);
+						while ((getchar()) != '\n');
+						printf("Please enter name of file for saving error status: ");
+						scanf("%200[^\n]s", errFileName_2);
+						saveInventory(invFileName, errFileName_2, invTree, currErr);
+					}
 				}
-			}
-			break;
+		break;
+		}
+			
 		case 3:
-			if (invTree->root == NULL)
+		{	if (invTree->root == NULL)
 				printf("inventory not initialized yet. Initialize before choosing any other option.\n");
 			else
 			{
@@ -139,8 +139,9 @@ int main()
 				}
 			}
 			break;
+		}
 		case 4:
-			if (invTree->root == NULL)
+			{	if (invTree->root == NULL)
 				printf("inventory not initialized yet. Initialize before choosing any other option.\n");
 			else
 			{
@@ -176,6 +177,7 @@ int main()
 				}
 			}
 			break;
+		}
 		default:
 			printf("command not recognized. Try again.\n");
 		}
@@ -197,31 +199,7 @@ void printMenu(chemTree* invTree)
 		"4) Record a purchase. \n\n", invTree->balance);
 }
 
-//void initInventory(char* invFileName, double bal, chemTree* invTree)
-//{
-//	char* chem_name = (char*)malloc(41);
-//	char* chem_code = (char*)malloc(21);
-//	long quantity;
-//	chemNode *Node;
-//
-//	invTree->balance = bal;
-//	deleteTree(invTree);
-//	FILE* invFile = fopen(invFileName, "r");
-//	if (invFile == NULL)
-//		printf("Error in opening inventory file. Inventory tree initialized as empty.\n");
-//	else
-//	{
-//		while (fscanf(invFile, "%40[^ ] %20[^ ] %ld", chem_name, chem_code, &quantity) == 3)
-//		{
-//			//while ((getchar()) != '\n');
-//			Node = makeNode(chem_code, chem_name, quantity);
-//			insertChemNode(invTree, Node);
-//			fclose(invFile);
-//		}
-//		//printTree(invTree->root);
-//	}
-//
-//}
+
 
 FILE* initErr(char* errFileName, FILE* currErr)
 {
@@ -238,7 +216,7 @@ FILE* initErr(char* errFileName, FILE* currErr)
 
 void makeSale(char* saleFileName, chemTree* currInv, FILE* currErr)
 {
-	char* chem_code = (char*)malloc(21 * sizeof(char));
+	char* chem_code = (char*)malloc(21 * sizeof(char));                     
 	long quantity;
 	long price;
 	char* nameOfRep = (char*)malloc(21 * sizeof(char));
@@ -268,7 +246,7 @@ void makeSale(char* saleFileName, chemTree* currInv, FILE* currErr)
 				currInv->balance = currInv->balance + price;
 			}
 		}
-		//printTree(invTree->root);
+		
 		fclose(saleFile);
 	}
 	free(chem_code);
@@ -287,7 +265,8 @@ void insertChemNode(chemTree* invTree, chemNode* Node)
 }
 
 void insertChemNode1(chemNode* invNode, chemNode* Node)
-{
+
+{	
 	if (strcmp(Node->data.chem_code, invNode->data.chem_code) == 0)
 		invNode->data.quantity = invNode->data.quantity + Node->data.quantity;
 	if (strcmp(Node->data.chem_code, invNode->data.chem_code) > 0)
@@ -307,7 +286,8 @@ void insertChemNode1(chemNode* invNode, chemNode* Node)
 }
 
 void printTree(chemNode* invNode)
-{
+ /* Recursive in-order print the tree*/
+{	
 	if (invNode == NULL)
 		printf("The tree is empty");
 	else
@@ -321,13 +301,14 @@ void printTree(chemNode* invNode)
 }
 
 void initInventory(char* invFileName, double bal, chemTree* invTree)
+	
 {
-	char* chem_name = (char*)malloc(41);
+	char* chem_name = (char*)malloc(41);       
 	char* chem_code = (char*)malloc(21);
 	long quantity;
 	chemNode* Node;
 
-	invTree->balance = bal;
+	invTree->balance = bal;                    
 	deleteTree(invTree);
 	FILE* invFile = fopen(invFileName, "r");
 	if (invFile == NULL)
@@ -341,7 +322,7 @@ void initInventory(char* invFileName, double bal, chemTree* invTree)
 			insertChemNode(invTree, Node);
 
 		}
-		//printTree(invTree->root);
+		
 		fclose(invFile);
 	}
 
@@ -351,10 +332,10 @@ void makePurchase(struct buyInfo* buy, chemTree* currInv)
 {
 
 	chemNode* buytoNode = findNode(buy->chem_code, currInv->root);         // Find the node to buy into.
-	currInv->balance -= buy->cost;										  // Decrease invTree balance
+	currInv->balance -= buy->cost;										   // Decrease invTree balance
 	if (buytoNode != NULL)
-		buytoNode->data.quantity += buy->quantity;						  // If the node exists, increase it's quantity.
-	else {																  // else, crease a new node and insert it into the tree
+		buytoNode->data.quantity += buy->quantity;						   // If the node exists, increase it's quantity.
+	else {																   // else, crease a new node and insert it into the tree
 		chemNode* node = makeNode(buy->chem_code, buy->chem_name, buy->quantity);
 		insertChemNode(currInv, node);
 	}
@@ -363,7 +344,8 @@ void makePurchase(struct buyInfo* buy, chemTree* currInv)
 }
 
 void fprintTree(FILE* invFile, chemNode* invNode)
-{
+/* Recursive in-order print the tree into invFile*/
+{	
 	if (invNode == NULL) {}
 
 	else
@@ -387,7 +369,7 @@ int saveInventory(char* invFileName, char* errFileName, chemTree* currInv, FILE*
 
 	fclose(invFile);
 	fseek(currErr, 0, SEEK_SET);
-	char c = fgetc(currErr);	   //copy currErr content into errFile
+	char c = fgetc(currErr);	   // copy currErr content into errFile
 	while (c != EOF) {
 		fputc(c, errFile);
 		c = fgetc(currErr);
@@ -403,7 +385,8 @@ void deleteTree(chemTree* invTree)
 }
 
 void deleteTree1(chemNode* invNode)
-{
+/* Recursively delete each node of the tree, free it's allocated memory*/
+{	
 	if (invNode != NULL)
 	{
 		if (invNode->left != NULL)
@@ -411,12 +394,13 @@ void deleteTree1(chemNode* invNode)
 		if (invNode->right != NULL)
 			deleteTree1(invNode->right);
 		free(invNode);
-		//invNode = NULL;
+		
 	}
 }
 
 chemNode* makeNode(char* chem_code, char* chem_name, long quantity)
-{
+/* Initialize a new node with chem_dode and chem_name fields */
+{	
 	chemNode* Node = (chemNode*)malloc(sizeof(chemNode));
 	Node->data.quantity = quantity;
 	strcpy_s(Node->data.chem_code, 20, chem_code);
@@ -426,6 +410,7 @@ chemNode* makeNode(char* chem_code, char* chem_name, long quantity)
 }
 
 chemNode* findNode(char* chem_code, chemNode* Node)
+/* Binary search a node by it's chem_code */
 {
 	if (Node == NULL)
 		return NULL;
@@ -463,7 +448,7 @@ chemNode* deleteNode(chemNode* root, char* chem_code)
 	else if (strcmp(chem_code, root->data.chem_code) > 0)
 		root->right = deleteNode(root->right, chem_code);
 	// if key is same as root's key,
-	// then This is the node
+	// then this is the node
 	// to be deleted
 	else {
 		// node with only one child or no child
@@ -483,8 +468,8 @@ chemNode* deleteNode(chemNode* root, char* chem_code)
 		// (smallest in the right subtree)
 		chemNode* temp = minValueNode(root->right);
 
-		// Copy the inorder
-		// successor's content to this node
+	
+		// Copy the inorder successor's content to this node
 		strcpy(root->data.chem_code, temp->data.chem_code);
 
 		// Delete the inorder successor
@@ -497,7 +482,7 @@ chemNode* minValueNode(chemNode* node)
 {
 	chemNode* current = node;
 
-	/* loop down to find the leftmost leaf */
+	/* loop down the tree to find the leftmost leaf */
 	while (current && current->left != NULL)
 		current = current->left;
 
