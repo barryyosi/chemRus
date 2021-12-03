@@ -1,4 +1,4 @@
-#Submitters: 208725218, 205887425
+//Submitters: 208725218, 205887425
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,22 +36,21 @@ void initInventory(char* invFileName, double bal, chemTree* invTree);
 FILE* initErr(char* errFileName, FILE* currErr);
 void makeSale(char* saleFileName, chemTree* currInv, FILE* currErr);
 void printMenu(chemTree* invTree);
-void insertChemNode(chemTree* invTree);
+void insertChemNode(chemTree* invTree, chemNode* Node);
 void insertChemNode1(chemNode* invNode, chemNode* Node);
 void printTree(chemNode* invNode);
 void deleteTree1(chemNode* invNode);
 void deleteTree(chemTree* invTree);
-void fprintTree(chemNode* invNode);
+void fprintTree(FILE* invFile, chemNode* invNode);
 void makePurchase(struct buyInfo* buy, chemTree* currInv);
 int saveInventory(char* invFileName, char* errFileName, chemTree* currInv, FILE* currErr);
-chemNode* makeNode(char* chem_code, char* chem_name, int quantity);
+chemNode* makeNode(char* chem_code, char* chem_name, long quantity);
 chemNode* findNode(char* chem_code, chemNode* Node);
 chemNode* minValueNode(chemNode* node);
 chemNode* deleteNode(chemNode* root, char* chem_code);
 
 
-int main()
-{
+int main() {
 	int choice;
 	double balance;
 	
@@ -236,7 +235,7 @@ void makeSale(char* saleFileName, chemTree* currInv, FILE* currErr)
 			invNode = findNode(chem_code, currInv->root);
 			if (invNode == NULL || invNode->data.quantity < quantity)
 			{
-				fprintf(currErr, "%s %s %d\n", chem_code, nameOfRep, quantity);
+				fprintf(currErr, "%s %s %ld\n", chem_code, nameOfRep, quantity);
 			}
 			else
 			{
@@ -295,7 +294,7 @@ void printTree(chemNode* invNode)
 	{
 		if (invNode->left != NULL)
 			printTree(invNode->left);
-		printf("%s %d\n", invNode->data.chem_code, invNode->data.quantity);
+		printf("%s %ld\n", invNode->data.chem_code, invNode->data.quantity);
 		if (invNode->right != NULL)
 			printTree(invNode->right);
 	}
@@ -353,7 +352,7 @@ void fprintTree(FILE* invFile, chemNode* invNode)
 	{
 		if (invNode->left != NULL)
 			fprintTree(invFile, invNode->left);
-		fprintf(invFile, "%s %s %d\n", invNode->data.chem_name, invNode->data.chem_code, invNode->data.quantity);
+		fprintf(invFile, "%s %s %ld\n", invNode->data.chem_name, invNode->data.chem_code, invNode->data.quantity);
 		if (invNode->right != NULL)
 			fprintTree(invFile, invNode->right);
 	}
@@ -404,8 +403,8 @@ chemNode* makeNode(char* chem_code, char* chem_name, long quantity)
 {	
 	chemNode* Node = (chemNode*)malloc(sizeof(chemNode));
 	Node->data.quantity = quantity;
-	strcpy_s(Node->data.chem_code, 20, chem_code);
-	strcpy_s(Node->data.chem_name, 40, chem_name);
+	strcpy(Node->data.chem_code, chem_code);
+	strcpy(Node->data.chem_name, chem_code);
 	Node->left = Node->right = NULL;
 	return Node;
 }
@@ -489,7 +488,4 @@ chemNode* minValueNode(chemNode* node)
 
 	return current;
 }
-
-
-
 
