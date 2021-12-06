@@ -190,10 +190,10 @@ int main() {
 void printMenu(chemTree* invTree)
 {
 	printf("Welcome to Chem-R-Us LTD database. Current company balance is %lf.\n"
-		"Please select an option from the following menu.\n"
+		"Please select an option from the following menu\n"
 		"Please enter choice.\n"
 		"0) Quit.\n"
-		"1) Initialize company inventory and error report files.\n"
+		"1) Initialize company balance and inventory and error report files.\n"
 		"2) Save current Inventory and error status to files.\n"
 		"3) Record a sale.\n"
 		"4) Record a purchase. \n\n", invTree->balance);
@@ -241,8 +241,8 @@ void makeSale(char* saleFileName, chemTree* currInv, FILE* currErr)
 			{
 				if (invNode->data.quantity > quantity)
 					invNode->data.quantity = invNode->data.quantity - quantity;
-				else
-					deleteNode(currInv->root, chem_code);
+				//else
+				//	deleteNode(currInv->root, chem_code);
 				currInv->balance = currInv->balance + price;
 			}
 		}
