@@ -239,7 +239,7 @@ void makeSale(char* saleFileName, chemTree* currInv, FILE* currErr)
 			}
 			else
 			{
-				if (invNode->data.quantity > quantity)
+				if (invNode->data.quantity >= quantity)
 					invNode->data.quantity = invNode->data.quantity - quantity;
 				//else
 				//	deleteNode(currInv->root, chem_code);
