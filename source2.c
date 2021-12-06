@@ -183,6 +183,7 @@ int main() {
 		}
 		free(invFileName);
 		free(errFileName);
+		free(errFileName_2);
 	}
 	return 0;
 }
@@ -325,6 +326,8 @@ void initInventory(char* invFileName, double bal, chemTree* invTree)
 		
 		fclose(invFile);
 	}
+	free(chem_name);
+	free(chem_code);
 
 }
 
