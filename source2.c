@@ -404,7 +404,7 @@ chemNode* makeNode(char* chem_code, char* chem_name, long quantity)
 	chemNode* Node = (chemNode*)malloc(sizeof(chemNode));
 	Node->data.quantity = quantity;
 	strcpy(Node->data.chem_code, chem_code);
-	strcpy(Node->data.chem_name, chem_code);
+	strcpy(Node->data.chem_name, chem_name);
 	Node->left = Node->right = NULL;
 	return Node;
 }
